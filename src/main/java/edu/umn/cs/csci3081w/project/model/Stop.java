@@ -116,18 +116,18 @@ public class Stop implements StopObserver {
   }
 
   /**
-   * Retrives the current stop information and send the information to the visualization module.
+   * Retrieves the current stop information and send the information to the visualization module.
    *
    */
   public void displayInfo() {
     JsonObject data = new JsonObject();
     data.addProperty("command", "observeStop");
     String text = "";
-    text += "Stop " + id + "\n";
-    text += "-----------------------------\n";
+    text += "Stop " + id + System.lineSeparator();
+    text += "-----------------------------" + System.lineSeparator();
     text += "  * Position: (" + longitude + ","
-        + latitude + ")\n";
-    text += "  * Number of People: " + getNumPassengersPresent() + "\n";
+        + latitude + ")" + System.lineSeparator();
+    text += "  * Number of People: " + getNumPassengersPresent() + System.lineSeparator();
     data.addProperty("text", text);
     if (Stop.TESTING) {
       testingOutput = data;
