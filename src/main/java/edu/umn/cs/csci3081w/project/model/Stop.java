@@ -11,8 +11,6 @@ public class Stop implements StopObserver {
   private List<Passenger> passengers;
   private double longitude;
   private double latitude;
-  public static boolean TESTING = false;
-  private JsonObject testingOutput;
   private ConcreteStopSubject concreteStopSubject;
 
   public double getLongitude() {
@@ -29,10 +27,6 @@ public class Stop implements StopObserver {
 
   public int getNumPassengersPresent() {
     return passengers.size();
-  }
-
-  public JsonObject getTestingOutput() {
-    return testingOutput;
   }
 
   /**
@@ -129,11 +123,7 @@ public class Stop implements StopObserver {
         + latitude + ")" + System.lineSeparator();
     text += "  * Number of People: " + getNumPassengersPresent() + System.lineSeparator();
     data.addProperty("text", text);
-    if (Stop.TESTING) {
-      testingOutput = data;
-    } else {
-      concreteStopSubject.getSession().sendJson(data);
-    }
+    concreteStopSubject.getSession().sendJson(data);
   }
 
   @Override

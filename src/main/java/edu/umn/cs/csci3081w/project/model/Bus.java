@@ -18,8 +18,6 @@ public class Bus implements BusObserver {
   private double distanceRemaining;
   private Stop nextStop;
   private BusData busData;
-  public static boolean TESTING = false;
-  private JsonObject testingOutput;
   private ConcreteBusSubject concreteBusSubject;
 
   /**
@@ -156,11 +154,7 @@ public class Bus implements BusObserver {
     text += "  * Passengers: " + busData.getNumPassengers() + System.lineSeparator();
     text += "  * Capacity: " + busData.getCapacity() + System.lineSeparator();
     data.addProperty("text", text);
-    if (Bus.TESTING) {
-      testingOutput = data;
-    } else {
-      concreteBusSubject.getSession().sendJson(data);
-    }
+    concreteBusSubject.getSession().sendJson(data);
   }
 
   public BusData getBusData() {
@@ -193,10 +187,6 @@ public class Bus implements BusObserver {
 
   public double getSpeed() {
     return speed;
-  }
-
-  public JsonObject getTestingOutput() {
-    return testingOutput;
   }
 
   public void setConcreteBusSubject(
