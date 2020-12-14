@@ -63,7 +63,7 @@ public class BusData {
     this.color = color;
   }
 
-  public BusDecorator getColor(){
+  public BusDecorator getColor() {
     return color;
   }
 }

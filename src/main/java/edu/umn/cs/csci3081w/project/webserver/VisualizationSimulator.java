@@ -33,7 +33,7 @@ public class VisualizationSimulator {
   private BusSubject busSubject;
   private StopSubject stopSubject;
   private BusCreator simulationConcreteBusCreator;
-  private CSVWriterSingleton csvWriter;
+  private CsvWriterSingleton csvWriter;
 
   /**
    * Constructor for Simulation.
@@ -75,7 +75,7 @@ public class VisualizationSimulator {
    * @param numTimeStepsParam    number of time steps
    */
   public void start(List<Integer> busStartTimingsParam, int numTimeStepsParam) {
-    csvWriter = CSVWriterSingleton.getInstance();
+    csvWriter = CsvWriterSingleton.getInstance();
     this.busStartTimings = busStartTimingsParam;
     this.numTimeSteps = numTimeStepsParam;
     for (int i = 0; i < busStartTimings.size(); i++) {
@@ -197,4 +197,7 @@ public class VisualizationSimulator {
     return numTimeSteps;
   }
 
+  public int getSimulationTimeElapsed() {
+    return simulationTimeElapsed;
+  }
 }

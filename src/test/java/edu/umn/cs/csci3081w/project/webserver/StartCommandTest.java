@@ -51,9 +51,12 @@ public class StartCommandTest {
     Session sessionDummy = mock(Session.class);
     myWebServerSessionSpy.onOpen(sessionDummy);
     JsonObject commandFromClient = new JsonObject();
+    JsonArray busTimes = new JsonArray();
+    busTimes.add("5");
+    busTimes.add("2");
     commandFromClient.addProperty("command", "start");
     commandFromClient.addProperty("numTimeSteps", 10);
-    commandFromClient.add("timeBetweenBusses", new JsonArray());
+    commandFromClient.add("timeBetweenBusses", busTimes);
     myWebServerSessionSpy.onMessage(commandFromClient.toString());
     verify(myWebServerSessionSpy).onMessage(commandFromClient.toString());
   }
