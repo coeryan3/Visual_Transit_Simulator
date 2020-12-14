@@ -25,12 +25,14 @@ public class BusDataTest {
    */
   @Test
   public void testConstructorWithParameters() {
-    BusData testBusData = new BusData("0", new Position(44.972392, -93.243774), 0, 30);
+    BusData testBusData = new BusData("0", new Position(44.972392, -93.243774), 0, 30, new BusDecorator(0));
+    BusDecorator color = new BusDecorator(0);
     assertEquals("0", testBusData.getId());
     assertEquals(44.972392, testBusData.getPosition().getXcoordLoc());
     assertEquals(-93.243774, testBusData.getPosition().getYcoordLoc());
     assertEquals(0, testBusData.getNumPassengers());
     assertEquals(30, testBusData.getCapacity());
+    assertEquals(color, testBusData.getColor());
   }
 
   /**

@@ -21,6 +21,7 @@ public class Bus implements BusObserver {
   public static boolean TESTING = false;
   private JsonObject testingOutput;
   private ConcreteBusSubject concreteBusSubject;
+  private BusDecorator color;
 
   /**
    * Constructor for a bus.
@@ -43,6 +44,7 @@ public class Bus implements BusObserver {
     this.loader = new PassengerLoader();
     this.passengers = new ArrayList<Passenger>();
     this.busData = new BusData();
+    this.color = new BusDecorator(0);
   }
 
   /**
@@ -109,9 +111,11 @@ public class Bus implements BusObserver {
    */
   public void updateBusData() {
     busData.setId(name);
+    busData.setColor(this.color.updateColor(0));
     // Get the correct route and early exit
     Route currentRoute = outgoingRoute;
     if (outgoingRoute.isAtEnd()) {
+      busData.setColor(this.color.updateColor(1));
       if (incomingRoute.isAtEnd()) {
         return;
       }

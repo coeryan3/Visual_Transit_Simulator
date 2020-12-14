@@ -36,6 +36,12 @@ public class GetBussesCommand extends MyWebServerCommand {
       jsonObject.addProperty("x", busses.get(i).getPosition().getXcoordLoc());
       jsonObject.addProperty("y", busses.get(i).getPosition().getYcoordLoc());
       s.add("position", jsonObject);
+      JsonObject jsonColor = new JsonObject();
+      jsonColor.addProperty("red", busses.get(i).getColor().getRed());
+      jsonColor.addProperty("green", busses.get(i).getColor().getGreen());
+      jsonColor.addProperty("blue", busses.get(i).getColor().getBlue());
+      jsonColor.addProperty("alpha", busses.get(i).getColor().getAlpha());
+      s.add("color", jsonColor);
       bussesArray.add(s);
     }
     data.add("busses", bussesArray);
