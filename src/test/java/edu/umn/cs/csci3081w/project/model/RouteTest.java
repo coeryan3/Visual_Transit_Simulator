@@ -157,7 +157,7 @@ public class RouteTest {
    * Test previous stop at beginning.
    */
   @Test
-  public void testPreviousStopAtBeginning() {
+  public void testPreviousStop() {
     Stop stop = new Stop(0, 44.972392, -93.243774);
     Stop stop2 = new Stop(1, 44.973580, -93.235071);
     Stop stop3 = new Stop(2, 44.975392, -93.226632);
@@ -175,13 +175,23 @@ public class RouteTest {
     Route testRoute = TestUtils.createRouteGivenData(stops, distances, probabilities);
     Stop prevStop = testRoute.prevStop();
     assertEquals(stop, prevStop);
+    testRoute.toNextStop();
+    assertEquals(stop, testRoute.prevStop());
+    testRoute.toNextStop();
+    assertEquals(stop2, testRoute.prevStop());
+    testRoute.toNextStop();
+    assertEquals(stop3, testRoute.prevStop());
+    testRoute.toNextStop();
+    assertEquals(stop3, testRoute.prevStop());
+    testRoute.toNextStop();
+    assertEquals(stop3, testRoute.prevStop());
   }
 
   /**
    * Test to next stop at beginning.
    */
   @Test
-  public void testNextStopAtBeginning() {
+  public void testNextStopToEnd() {
     Stop stop = new Stop(0, 44.972392, -93.243774);
     Stop stop2 = new Stop(1, 44.973580, -93.235071);
     Stop stop3 = new Stop(2, 44.975392, -93.226632);
@@ -202,6 +212,10 @@ public class RouteTest {
     Stop nextStop = testRoute.getDestinationStop();
     assertEquals(stop2, nextStop);
     assertEquals(1, destinationStopIndex);
+    testRoute.toNextStop();
+    testRoute.toNextStop();
+    testRoute.toNextStop();
+    assertTrue(testRoute.isAtEnd());
   }
 
   /**

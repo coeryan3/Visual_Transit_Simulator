@@ -66,10 +66,13 @@ public class BusTest {
     probabilitiesOut.add(.15);
     PassengerGenerator generatorOut = new RandomPassengerGenerator(probabilitiesOut, stopsOut);
     Route testRouteOut = new Route("testRouteIn", stopsOut, distancesOut, 3, generatorOut);
-    Bus bus = new Bus("TestBus", testRouteOut, testRouteIn, 5, 1);
+    Bus bus = new Bus("TestBus", testRouteOut, testRouteIn, 5, -1);
     assertEquals("TestBus", bus.getName());
     assertEquals(5, bus.getCapacity());
-    assertEquals(1.0, bus.getSpeed());
+    assertEquals(-1.0, bus.getSpeed());
+    assertEquals(testRouteIn, bus.getIncomingRoute());
+    assertEquals(testRouteOut, bus.getOutgoingRoute());
+    bus.move();
   }
 
   /**
@@ -161,6 +164,23 @@ public class BusTest {
   }
 
   /**
+   * Test trip complete when bus reaches the end of its routes.
+   */
+  @Test
+  public void testIsTripCompleteWhenBusReachEnd() {
+    Bus testBus = TestUtils.createBus();
+    testBus.update();
+    testBus.update();
+    testBus.update();
+    testBus.update();
+    testBus.update();
+    testBus.update();
+    testBus.update();
+    boolean testBusAtEnd = testBus.isTripComplete();
+    assertTrue(testBusAtEnd);
+  }
+
+  /**
    * Test load passenger with a full bus.
    */
   @Test
@@ -179,6 +199,7 @@ public class BusTest {
     testBus.loadPassenger(passenger5);
     boolean passengersLoaded = testBus.loadPassenger(passenger6);
     assertFalse(passengersLoaded);
+    testBus.update();
   }
 
   /**
@@ -190,6 +211,19 @@ public class BusTest {
     Passenger passenger = new Passenger(1, "Goldy");
     boolean passengersLoaded = testBus.loadPassenger(passenger);
     assertTrue(passengersLoaded);
+  }
+
+  /**
+   * Test load passenger from a stop while bus is moving.
+   */
+  @Test
+  public void testLoadPassengerFromStop() {
+    Bus testBus = TestUtils.createBus();
+    Passenger passenger = new Passenger(3, "Goldy");
+    testBus.getIncomingRoute().getStops().get(1).addPassengers(passenger);
+    testBus.move();
+    testBus.move();
+    assertEquals(1, testBus.getNumPassengers());
   }
 
   /**
