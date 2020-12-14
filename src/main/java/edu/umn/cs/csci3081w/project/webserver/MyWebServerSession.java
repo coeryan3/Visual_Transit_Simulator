@@ -25,6 +25,7 @@ public class MyWebServerSession {
   private MyWebServer myWS;
   private ConfigManager cm;
   private VisualizationSimulator mySim;
+  private CSVWriterSingleton csvWriter;
 
   public MyWebServerSession() {
     System.out.println("class loaded " + this.getClass());
@@ -103,6 +104,8 @@ public class MyWebServerSession {
   @OnClose
   public void onClose(Session session) {
     System.out.println("session closed");
+    csvWriter = CSVWriterSingleton.getInstance();
+    csvWriter.closeFile();
     //make session null as the session is closed
     this.session = null;
   }
