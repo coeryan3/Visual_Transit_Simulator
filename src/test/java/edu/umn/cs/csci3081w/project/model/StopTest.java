@@ -2,15 +2,23 @@ package edu.umn.cs.csci3081w.project.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import com.google.gson.JsonObject;
+import edu.umn.cs.csci3081w.project.webserver.MyWebServerSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import javax.websocket.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 public class StopTest {
 
@@ -23,8 +31,6 @@ public class StopTest {
     PassengerFactory.DETERMINISTIC_NAMES_COUNT = 0;
     PassengerFactory.DETERMINISTIC_DESTINATION_COUNT = 0;
     RandomPassengerGenerator.DETERMINISTIC = true;
-    Bus.TESTING = true;
-    Stop.TESTING = true;
   }
 
   /**
@@ -229,16 +235,24 @@ public class StopTest {
   @Test
   public void testDisplayInfo() {
     Stop testStop = new Stop(0, 44.972392, -93.243774);
+    MyWebServerSession myWebServerSessionSpy = spy(MyWebServerSession.class);
+    doNothing().when(myWebServerSessionSpy).sendJson(Mockito.isA(JsonObject.class));
+    Session sessionDummy = mock(Session.class);
+    myWebServerSessionSpy.onOpen(sessionDummy);
+    JsonObject commandFromClient = new JsonObject();
+    commandFromClient.addProperty("command", "observeStop");
+    ConcreteStopSubject concreteStopSubject = new ConcreteStopSubject(myWebServerSessionSpy);
+    testStop.setConcreteStopSubject(concreteStopSubject);
     testStop.displayInfo();
-    JsonObject testingOutput = testStop.getTestingOutput();
-    String command = testingOutput.get("command").getAsString();
-    assertEquals("observeStop", command);
-    String text = testingOutput.get("text").getAsString();
+    ArgumentCaptor<JsonObject> messageCaptor = ArgumentCaptor.forClass(JsonObject.class);
+    verify(myWebServerSessionSpy).sendJson(messageCaptor.capture());
+    JsonObject commandToClient = messageCaptor.getValue();
+    assertEquals("\"observeStop\"", commandToClient.get("command").toString());
     String strToCompare =
         "Stop 0" + System.lineSeparator()
             + "-----------------------------" + System.lineSeparator()
             + "  * Position: (44.972392,-93.243774)" + System.lineSeparator()
             + "  * Number of People: 0" + System.lineSeparator();
-    assertEquals(strToCompare, text);
+    assertEquals(strToCompare, commandToClient.get("text").getAsString());
   }
 }

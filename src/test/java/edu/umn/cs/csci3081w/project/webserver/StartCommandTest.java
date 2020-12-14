@@ -1,6 +1,6 @@
 package edu.umn.cs.csci3081w.project.webserver;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -15,10 +15,10 @@ import edu.umn.cs.csci3081w.project.model.Stop;
 import javax.websocket.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-public class MyWebServerSessionTest {
+
+public class StartCommandTest {
 
   /**
    * Setup deterministic operations before each test runs.
@@ -32,35 +32,29 @@ public class MyWebServerSessionTest {
   }
 
   /**
-   * Test command for initializing the simulation.
+   * Testing constructor.
    */
   @Test
-  public void testSimulationInitialization() {
-    MyWebServerSession myWebServerSessionSpy = spy(MyWebServerSession.class);
-    doNothing().when(myWebServerSessionSpy).sendJson(Mockito.isA(JsonObject.class));
-    Session sessionDummy = mock(Session.class);
-    myWebServerSessionSpy.onOpen(sessionDummy);
-    JsonObject commandFromClient = new JsonObject();
-    commandFromClient.addProperty("command", "initRoutes");
-    myWebServerSessionSpy.onMessage(commandFromClient.toString());
-    ArgumentCaptor<JsonObject> messageCaptor = ArgumentCaptor.forClass(JsonObject.class);
-    verify(myWebServerSessionSpy).sendJson(messageCaptor.capture());
-    JsonObject commandToClient = messageCaptor.getValue();
-    assertEquals("4", commandToClient.get("numRoutes").getAsString());
+  public void testConstructorNormal() {
+    VisualizationSimulator visualizationSimulator = mock(VisualizationSimulator.class);
+    StartCommand startCommand = new StartCommand(visualizationSimulator);
+    assertNotNull(startCommand);
   }
 
   /**
-   * Testing null command.
+   * Testing execute.
    */
   @Test
-  public void testNullCommand() {
+  public void testExecute() {
     MyWebServerSession myWebServerSessionSpy = spy(MyWebServerSession.class);
     doNothing().when(myWebServerSessionSpy).sendJson(Mockito.isA(JsonObject.class));
     Session sessionDummy = mock(Session.class);
     myWebServerSessionSpy.onOpen(sessionDummy);
     JsonObject commandFromClient = new JsonObject();
-    commandFromClient.addProperty("command", "");
+    commandFromClient.addProperty("command", "start");
+    commandFromClient.addProperty("numTimeSteps", 10);
+    commandFromClient.add("timeBetweenBusses", new JsonArray());
     myWebServerSessionSpy.onMessage(commandFromClient.toString());
-    verify(myWebServerSessionSpy).onMessage("{\"command\":\"\"}");
+    verify(myWebServerSessionSpy).onMessage(commandFromClient.toString());
   }
 }

@@ -109,4 +109,20 @@ public class MyWebServerSession {
     //make session null as the session is closed
     this.session = null;
   }
+
+  /**
+   * Getter method for private MyWebServer myWS.
+   * @return myWs private MyWebServer attribute
+   */
+  public MyWebServer getMyWS() {
+    return myWS;
+  }
+
+  /**
+   * Getter method for private VisualizationSimulator mySim.
+   * @return mySim private VisualizationSimulator attribute
+   */
+  public VisualizationSimulator getVisualizationSimulator() {
+    return mySim;
+  }
 }

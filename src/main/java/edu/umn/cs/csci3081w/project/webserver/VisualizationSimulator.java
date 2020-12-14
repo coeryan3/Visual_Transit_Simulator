@@ -191,4 +191,12 @@ public class VisualizationSimulator {
     }
   }
 
+  /**
+   * Getting private numTimeSteps attribute.
+   * @return numTimeSteps private int
+   */
+  public int getNumTimeSteps() {
+    return numTimeSteps;
+  }
+
 }

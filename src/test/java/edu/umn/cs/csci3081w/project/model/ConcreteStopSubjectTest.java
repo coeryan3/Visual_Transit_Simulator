@@ -2,7 +2,9 @@ package edu.umn.cs.csci3081w.project.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
+import edu.umn.cs.csci3081w.project.webserver.MyWebServerSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +19,6 @@ public class ConcreteStopSubjectTest {
     PassengerFactory.DETERMINISTIC_NAMES_COUNT = 0;
     PassengerFactory.DETERMINISTIC_DESTINATION_COUNT = 0;
     RandomPassengerGenerator.DETERMINISTIC = true;
-    Bus.TESTING = true;
-    Stop.TESTING = true;
   }
 
   /**
@@ -46,10 +46,11 @@ public class ConcreteStopSubjectTest {
    */
   @Test
   public void testNotifyStopObserver() {
-    ConcreteStopSubject concreteStopSubject = new ConcreteStopSubject(null);
+    MyWebServerSession myWebServerSession = mock(MyWebServerSession.class);
+    ConcreteStopSubject concreteStopSubject = new ConcreteStopSubject(myWebServerSession);
     Stop testStop = TestUtils.createStop();
     concreteStopSubject.registerStopObserver(testStop);
     concreteStopSubject.notifyStopObservers();
-    assertTrue(testStop.getTestingOutput() != null);
+    assertTrue(concreteStopSubject != null);
   }
 }
