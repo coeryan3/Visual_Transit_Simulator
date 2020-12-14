@@ -15,12 +15,12 @@ public class BusData {
    * @param pass number of passengers
    * @param cap capacity of bus to be created
    */
-  public BusData(String id, Position pos, int pass, int cap, BusDecorator color) {
+  public BusData(String id, Position pos, int pass, int cap) {
     this.id = id;
     this.position = pos;
     this.numPassengers = pass;
     this.capacity = cap;
-    this.color = color;
+    this.color = new BusDecorator(0);
   }
 
   public BusData() {
