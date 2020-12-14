@@ -11,6 +11,7 @@ import edu.umn.cs.csci3081w.project.model.RegularBus;
 import edu.umn.cs.csci3081w.project.model.Route;
 import edu.umn.cs.csci3081w.project.model.SmallBus;
 import edu.umn.cs.csci3081w.project.model.Stop;
+import edu.umn.cs.csci3081w.project.model.StopData;
 import edu.umn.cs.csci3081w.project.model.StopSubject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class VisualizationSimulator {
   private BusSubject busSubject;
   private StopSubject stopSubject;
   private BusCreator simulationConcreteBusCreator;
+  private CSVWriterSingleton csvWriter;
 
   /**
    * Constructor for Simulation.
@@ -75,6 +77,7 @@ public class VisualizationSimulator {
    * @param numTimeStepsParam    number of time steps
    */
   public void start(List<Integer> busStartTimingsParam, int numTimeStepsParam) {
+    csvWriter = CSVWriterSingleton.getInstance();
     this.busStartTimings = busStartTimingsParam;
     this.numTimeSteps = numTimeStepsParam;
     for (int i = 0; i < busStartTimings.size(); i++) {
@@ -131,12 +134,27 @@ public class VisualizationSimulator {
         }
         webInterface.updateBus(busses.get(i).getBusData(), false);
         busses.get(i).report(System.out);
+        String data = "BUS," + simulationTimeElapsed
+            + "," + busses.get(i).getBusData().getId()
+            + "," + busses.get(i).getBusData().getPosition().getXcoordLoc()
+            + "," + busses.get(i).getBusData().getPosition().getYcoordLoc()
+            + "," + busses.get(i).getBusData().getNumPassengers()
+            + "," + busses.get(i).getBusData().getCapacity() + "\n";
+        csvWriter.writeToFile(data);
       }
       // Update routes
       for (int i = 0; i < prototypeRoutes.size(); i++) {
         prototypeRoutes.get(i).update();
         webInterface.updateRoute(prototypeRoutes.get(i).getRouteData(), false);
         prototypeRoutes.get(i).report(System.out);
+        List<StopData> stops = prototypeRoutes.get(i).getRouteData().getStops();
+        for (int j = 0; j < stops.size(); j++) {
+          String data = "STOP," + simulationTimeElapsed + "," + stops.get(j).getId()
+              + "," + stops.get(j).getPosition().getXcoordLoc()
+              + "," + stops.get(j).getPosition().getYcoordLoc()
+              + "," + stops.get(j).getNumPeople() + "\n";
+          csvWriter.writeToFile(data);
+        }
       }
       busSubject.notifyBusObservers();
       stopSubject.notifyStopObservers();
@@ -171,6 +189,14 @@ public class VisualizationSimulator {
         }
       }
     }
+  }
+
+  /**
+   * Getting private numTimeSteps attribute.
+   * @return numTimeSteps private int
+   */
+  public int getNumTimeSteps() {
+    return numTimeSteps;
   }
 
 }

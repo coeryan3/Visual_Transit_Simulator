@@ -5,6 +5,7 @@ public class BusData {
   private Position position;
   private int numPassengers;
   private int capacity;
+  private BusDecorator color;
 
   /**
    * Stores details of a bus.
@@ -19,6 +20,7 @@ public class BusData {
     this.position = pos;
     this.numPassengers = pass;
     this.capacity = cap;
+    this.color = new BusDecorator(0);
   }
 
   public BusData() {
@@ -55,5 +57,13 @@ public class BusData {
 
   public void setCapacity(int capacity) {
     this.capacity = capacity;
+  }
+
+  public void setColor(BusDecorator color) {
+    this.color = color;
+  }
+
+  public BusDecorator getColor(){
+    return color;
   }
 }
