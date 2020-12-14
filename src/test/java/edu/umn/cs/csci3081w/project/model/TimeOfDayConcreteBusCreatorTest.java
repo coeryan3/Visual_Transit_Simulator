@@ -31,6 +31,15 @@ public class TimeOfDayConcreteBusCreatorTest {
     BusDeploymentStrategy busDeploymentStrategy =
         timeOfDayConcreteBusCreator.getStrategy();
     assertTrue(busDeploymentStrategy instanceof BusDeploymentStrategyNight);
+    timeOfDayConcreteBusCreator.setStrategy(7);
+    busDeploymentStrategy = timeOfDayConcreteBusCreator.getStrategy();
+    assertTrue(busDeploymentStrategy instanceof BusDeploymentStrategyMorning);
+    timeOfDayConcreteBusCreator.setStrategy(10);
+    busDeploymentStrategy = timeOfDayConcreteBusCreator.getStrategy();
+    assertTrue(busDeploymentStrategy instanceof BusDeploymentStrategyDay);
+    timeOfDayConcreteBusCreator.setStrategy(19);
+    busDeploymentStrategy = timeOfDayConcreteBusCreator.getStrategy();
+    assertTrue(busDeploymentStrategy instanceof BusDeploymentStrategyEvening);
   }
 
   /**

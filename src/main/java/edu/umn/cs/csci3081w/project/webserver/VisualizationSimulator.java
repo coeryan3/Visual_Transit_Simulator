@@ -30,7 +30,6 @@ public class VisualizationSimulator {
   private List<Bus> busses;
   private int busId = 1000;
   private boolean paused = false;
-  private Random rand;
   private BusSubject busSubject;
   private StopSubject stopSubject;
   private BusCreator simulationConcreteBusCreator;
@@ -52,7 +51,6 @@ public class VisualizationSimulator {
     this.prototypeRoutes = new ArrayList<Route>();
     this.busses = new ArrayList<Bus>();
     this.timeSinceLastBus = new ArrayList<Integer>();
-    this.rand = new Random();
     this.busSubject = new ConcreteBusSubject(session);
     this.stopSubject = new ConcreteStopSubject(session);
   }

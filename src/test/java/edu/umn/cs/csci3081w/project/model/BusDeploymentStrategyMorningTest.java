@@ -55,5 +55,7 @@ public class BusDeploymentStrategyMorningTest {
     BusDeploymentStrategyMorning busDeploymentStrategyMorning = new BusDeploymentStrategyMorning();
     Bus testBus = busDeploymentStrategyMorning.getNextBus("0", testOutRoute, testInRoute, 1);
     assertTrue(testBus instanceof SmallBus);
+    testBus = busDeploymentStrategyMorning.getNextBus("1", testOutRoute, testInRoute, 1);
+    assertTrue(testBus instanceof RegularBus);
   }
 }

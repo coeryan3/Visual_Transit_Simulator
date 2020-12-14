@@ -34,7 +34,7 @@ public class RandomPassengerGeneratorTest {
   }
 
   /**
-   * Test passenger generation.
+   * Test deterministic passenger generation.
    */
   @Test
   public void testGeneratePassengersTestWithProbsAndStops() {
